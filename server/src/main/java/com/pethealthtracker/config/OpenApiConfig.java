@@ -23,7 +23,7 @@ public class OpenApiConfig {
     private String contextPath;
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";
         
         // Construir la URL base

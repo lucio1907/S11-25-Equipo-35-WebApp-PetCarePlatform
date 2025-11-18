@@ -52,9 +52,9 @@ public class SecurityConfig {
         // H2 Console (solo para desarrollo)
         "/h2-console/**"
     };
-    
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Configuración de CORS
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         
@@ -111,9 +111,9 @@ public class SecurityConfig {
 
         return http.build();
     }
-    
+
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // Permitir desde cualquier origen en desarrollo

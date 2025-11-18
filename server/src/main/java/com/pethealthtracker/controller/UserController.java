@@ -99,7 +99,7 @@ public class UserController {
     @Operation(summary = "Sube una imagen de perfil")
     @PostMapping(value = "/me/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<String>> uploadProfilePicture(
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam MultipartFile file) throws IOException {
         // En producción, implementar subida a un servicio como AWS S3
         String imageUrl = "https://example.com/profile-pictures/" + file.getOriginalFilename();
         userService.updateProfilePicture(imageUrl);

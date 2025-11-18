@@ -15,7 +15,7 @@ import java.util.Optional;
 public class AuditConfig {
 
     @Bean
-    public AuditorAware<String> auditorProvider() {
+    AuditorAware<String> auditorProvider() {
         return () -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             
@@ -24,10 +24,10 @@ public class AuditConfig {
             }
             
             Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                return Optional.of(((UserDetails) principal).getUsername());
-            } else if (principal instanceof String) {
-                return Optional.of((String) principal);
+            if (principal instanceof UserDetails details) {
+                return Optional.of(details.getUsername());
+            } else if (principal instanceof String string) {
+                return Optional.of(string);
             }
             
             return Optional.of("anonymous");

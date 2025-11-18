@@ -28,23 +28,25 @@ public class PetHealthTrackerApplication {
         }
         
         // Construir las URLs
-        String apiUrl = String.format("http://localhost:%s%s", port, contextPath);
-        String docsUrl = String.format("http://localhost:%s%sswagger-ui.html", port, contextPath);
+        String apiUrl = "http://localhost:%s%s".formatted(port, contextPath);
+        String docsUrl = "http://localhost:%s%sswagger-ui.html".formatted(port, contextPath);
         
         // Mensaje formateado
-        String message = String.format(
-            "\n" +
-            "╔════════════════════════════════════════════════════════════════════╗\n" +
-            "║                                                                  ║\n" +
-            "║   🐾  ¡Pet Health Tracker está en funcionamiento! 🐾              ║\n" +
-            "║                                                                  ║\n" +
-            "║   🌐  URL de la API: %-43s║\n" +
-            "║                                                                  ║\n" +
-            "║   📚  Documentación: %-40s║\n" +
-            "║                                                                  ║\n" +
-            "╚════════════════════════════════════════════════════════════════════╝\n",
-            apiUrl,
-            docsUrl
+        String message = (
+                """
+                
+                ╔════════════════════════════════════════════════════════════════════╗
+                ║                                                                  ║
+                ║   🐾  ¡Pet Health Tracker está en funcionamiento! 🐾              ║
+                ║                                                                  ║
+                ║   🌐  URL de la API: %-43s║
+                ║                                                                  ║
+                ║   📚  Documentación: %-40s║
+                ║                                                                  ║
+                ╚════════════════════════════════════════════════════════════════════╝
+                """).formatted(
+                apiUrl,
+                docsUrl
         );
         
         System.out.println(message);
