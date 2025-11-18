@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /*
    Interfaz de repositorio para la entidad Pet.
 */
 
+@Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
     // 1. Encontrar mascotas por ID de usuario
     List<Pet> findByUserId(Long userId);

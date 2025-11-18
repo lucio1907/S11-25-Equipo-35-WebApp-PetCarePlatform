@@ -19,7 +19,8 @@ import java.util.HashSet;
 @Table(name = "users", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"email"})
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

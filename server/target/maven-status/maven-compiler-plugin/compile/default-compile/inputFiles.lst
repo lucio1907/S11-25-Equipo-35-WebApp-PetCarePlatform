@@ -10,6 +10,8 @@
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/auth/LoginRequest.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/auth/RegisterRequest.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/pets/PetDTO.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/reminders/ReminderRequestDTO.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/reminders/ReminderResponseDTO.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/user/UserDto.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/exception/BadRequestException.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/exception/GlobalExceptionHandler.java
@@ -17,11 +19,15 @@
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/mapper/UserMapper.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/BaseEntity.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/Pet.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/Reminder.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/User.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/enums/Gender.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/enums/PetSpecies.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/enums/RecurrencePattern.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/enums/ReminderType.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/model/enums/WeightUnit.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/repository/PetRepository.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/repository/ReminderRepository.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/repository/UserRepository.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/security/JwtAuthenticationFilter.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/security/JwtProperties.java
@@ -30,6 +36,7 @@
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/security/UserPrincipal.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/AuthService.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/PetService.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/ReminderService.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/UserService.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/impl/AuthServiceImpl.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/service/impl/UserServiceImpl.java

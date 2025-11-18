@@ -21,8 +21,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
-@Data
 @Table(name = "pets")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
