@@ -17,17 +17,20 @@ public class ApiResponse<T> {
     private boolean success;
     private String message;
     private T data;
+    
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
 
     public static <T> ApiResponse<T> success(T data) {
-        return ApiResponse.<T>builder()
+        // CORRECCIÓN: Llamar al builder especificando el tipo genérico <T>
+        return ApiResponse.<T>builder() 
                 .success(true)
                 .data(data)
                 .build();
     }
 
     public static <T> ApiResponse<T> success(String message, T data) {
+        // CORRECCIÓN: Llamar al builder especificando el tipo genérico <T>
         return ApiResponse.<T>builder()
                 .success(true)
                 .message(message)
@@ -36,6 +39,7 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> error(String message) {
+        // CORRECCIÓN: Llamar al builder especificando el tipo genérico <T>
         return ApiResponse.<T>builder()
                 .success(false)
                 .message(message)

@@ -1,4 +1,5 @@
 com/pethealthtracker/dto/user/UserDto.class
+com/pethealthtracker/model/enums/PetSpecies.class
 com/pethealthtracker/mapper/UserMapper.class
 com/pethealthtracker/security/UserPrincipal.class
 com/pethealthtracker/dto/ApiResponse$ApiResponseBuilder.class
@@ -10,14 +11,21 @@ com/pethealthtracker/dto/auth/LoginRequest.class
 com/pethealthtracker/controller/AuthController.class
 com/pethealthtracker/model/User$UserBuilder.class
 com/pethealthtracker/config/AuditConfig.class
+com/pethealthtracker/security/JwtProperties.class
 com/pethealthtracker/service/impl/UserServiceImpl.class
 com/pethealthtracker/dto/user/UserDto$UserDtoBuilder.class
+com/pethealthtracker/model/enums/WeightUnit.class
 com/pethealthtracker/config/ApplicationConfig.class
+com/pethealthtracker/dto/pets/PetDTO.class
+com/pethealthtracker/model/Pet$PetBuilder.class
 com/pethealthtracker/repository/UserRepository.class
+com/pethealthtracker/repository/PetRepository.class
 com/pethealthtracker/config/OpenApiConfig.class
+com/pethealthtracker/model/Pet.class
 com/pethealthtracker/security/JwtTokenProvider.class
 com/pethealthtracker/dto/auth/JwtAuthResponse$JwtAuthResponseBuilder.class
 com/pethealthtracker/model/BaseEntity.class
+com/pethealthtracker/service/PetService.class
 com/pethealthtracker/dto/ApiResponse.class
 com/pethealthtracker/security/JwtAuthenticationFilter.class
 com/pethealthtracker/exception/ResourceNotFoundException.class
@@ -29,4 +37,5 @@ com/pethealthtracker/config/ApplicationConfig$1.class
 com/pethealthtracker/service/impl/AuthServiceImpl.class
 com/pethealthtracker/service/AuthService.class
 com/pethealthtracker/exception/GlobalExceptionHandler.class
+com/pethealthtracker/model/enums/Gender.class
 com/pethealthtracker/model/User.class

@@ -3,6 +3,7 @@ package com.pethealthtracker.dto.auth;
 import com.pethealthtracker.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JwtAuthResponse {
     private String accessToken;
+
+    @Default 
     private String tokenType = "Bearer";
+
     private UserDto user;
     
     public JwtAuthResponse(String accessToken, UserDto user) {
