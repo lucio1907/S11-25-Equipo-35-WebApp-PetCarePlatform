@@ -31,7 +31,7 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
         // Auth endpoints
         "/api/auth/**",
-            "/api/**",
+            // "/api/**",
 
             // API Documentation - Rutas principales de Swagger UI y OpenAPI
         "/v3/api-docs/**",
