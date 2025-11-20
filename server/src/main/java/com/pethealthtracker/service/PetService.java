@@ -38,19 +38,25 @@ public class PetService {
 
         // 2. Verificar si la mascota ya existe
         if (petRepository.findByNameAndUserId(petRequestDTO.getName(), userId).isPresent()) {
-            throw new ResourceNotFoundException("Mascota", "nombre", petRequestDTO.getName());
+            throw new ResourceNotFoundException("La mascota ya esta registrada para este usuario.");
         }
 
-        // 3. Mapear DTO a entidad Pet
+        // 3. Verificar si el número de microchip ya existe
+        if (petRequestDTO.getMicrochipNumber() != null && 
+            petRepository.findByMicrochipNumber(petRequestDTO.getMicrochipNumber()).isPresent()) {
+            throw new ResourceNotFoundException("El número de microchip ya está registrado para otra mascota.");
+        }
+
+        // 4. Mapear DTO a entidad Pet
         Pet pet = PetService.mapDtoToEntity(petRequestDTO, owner);
 
-        // 4. Lógica de negocio: Calcular la edad
+        // 5. Lógica de negocio: Calcular la edad
         PetService.calculateAge(pet);
 
-        // 5. Guardar la mascota en la base de datos
+        // 6. Guardar la mascota en la base de datos
         Pet savedPet = petRepository.save(pet);
 
-        // 6. Devolver el DTO de Respuesta
+        // 7. Devolver el DTO de Respuesta
         return PetService.mapToResponseDTO(savedPet);
     }
 

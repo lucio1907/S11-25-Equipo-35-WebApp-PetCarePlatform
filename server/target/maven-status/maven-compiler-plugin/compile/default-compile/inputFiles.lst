@@ -5,11 +5,8 @@
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/config/OpenApiConfig.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/config/SecurityConfig.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/AuthController.java
-<<<<<<< HEAD
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/FeedingScheduleController.java
-=======
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/PetController.java
->>>>>>> ac24ff5 (feat: pets endpoints done & security configs changes)
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/UserController.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/ApiResponse.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/FeedingScheduleDto.java
