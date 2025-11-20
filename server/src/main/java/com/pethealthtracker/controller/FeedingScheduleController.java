@@ -30,7 +30,6 @@ public class FeedingScheduleController {
 
     private final FeedingScheduleService feedingScheduleService;
 
-    @Autowired
     public FeedingScheduleController(FeedingScheduleService feedingScheduleService) {
         this.feedingScheduleService = feedingScheduleService;
     }
