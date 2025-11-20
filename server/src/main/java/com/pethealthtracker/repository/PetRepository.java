@@ -2,8 +2,6 @@ package com.pethealthtracker.repository;
 
 import com.pethealthtracker.model.Pet;
 
-import java.lang.foreign.Linker.Option;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
+    
     // 1. Encontrar mascotas por ID de usuario
     List<Pet> findByUserId(Long userId);
 
@@ -30,4 +29,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     // 5. Encontrar mascotas por especie
     List<Pet> findBySpecies(String species);
+
+    // 6. Encontrar mascota por ID de Mascota e ID de Usuario (Para verificación de propiedad)
+    Optional<Pet> findByIdAndUserId(Long petId, Long userId); 
 }

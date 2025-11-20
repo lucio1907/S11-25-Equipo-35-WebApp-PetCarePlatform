@@ -5,14 +5,19 @@
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/config/OpenApiConfig.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/config/SecurityConfig.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/AuthController.java
+<<<<<<< HEAD
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/FeedingScheduleController.java
+=======
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/PetController.java
+>>>>>>> ac24ff5 (feat: pets endpoints done & security configs changes)
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/controller/UserController.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/ApiResponse.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/FeedingScheduleDto.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/auth/JwtAuthResponse.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/auth/LoginRequest.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/auth/RegisterRequest.java
-/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/pets/PetDTO.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/pets/PetRequestDTO.java
+/media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/pets/PetResponseDTO.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/reminders/ReminderRequestDTO.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/reminders/ReminderResponseDTO.java
 /media/luciogastellu/SSD 2/projects/PetCare-Platform/server/src/main/java/com/pethealthtracker/dto/user/UserDto.java

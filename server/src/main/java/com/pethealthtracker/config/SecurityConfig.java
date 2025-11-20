@@ -30,22 +30,22 @@ public class SecurityConfig {
     // Lista blanca de rutas que no requieren autenticación
     private static final String[] WHITE_LIST_URL = {
         // Auth endpoints
-        "/api/auth/**",
+        "/auth/**",
             // "/api/**",
 
             // API Documentation - Rutas principales de Swagger UI y OpenAPI
-        "/api/v3/api-docs/**",
-        "/api/v3/api-docs",
-        "/api/v3/api-docs.yaml",
-        "/api/v3/api-docs/swagger-config",
-        "/api/swagger-ui/**",
-        "/api/swagger-ui.html",
-        "/api/swagger-ui.html/**",
-        "/api/swagger-ui/index.html",
-        "/api/swagger-resources/**",
-        "/api/swagger-resources",
-        "/api/webjars/**",
-        "/api/webjars/springdoc-openapi-ui/**",
+        "/v3/api-docs/**",
+        "/v3/api-docs",
+        "/v3/api-docs.yaml",
+        "/v3/api-docs/swagger-config",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-ui.html/**",
+        "/swagger-ui/index.html",
+        "/swagger-resources/**",
+        "/swagger-resources",
+        "/webjars/**",
+        "/webjars/springdoc-openapi-ui/**",
         "/favicon.ico",
         "/error",
         
@@ -67,9 +67,7 @@ public class SecurityConfig {
             auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
             
             // Permitir acceso a las rutas en la lista blanca
-            for (String pattern : WHITE_LIST_URL) {
-                auth.requestMatchers(pattern).permitAll();
-            }
+            auth.requestMatchers(WHITE_LIST_URL).permitAll();
             
             // Permitir el acceso a la documentación de la API
             auth.requestMatchers(

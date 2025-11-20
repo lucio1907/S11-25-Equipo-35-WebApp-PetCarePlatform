@@ -31,8 +31,9 @@ public class JwtTokenProvider {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         
         return Jwts.builder()
-                .subject(userPrincipal.getId().toString())
-                .claim("email", userPrincipal.getEmail())
+                .subject(userPrincipal.getEmail())
+                .claim("id", userPrincipal.getId())
+                .claim("emailVerified", userPrincipal.getEmailVerified())
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key())

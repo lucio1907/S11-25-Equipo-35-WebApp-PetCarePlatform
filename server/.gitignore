@@ -6,3 +6,4 @@ set_env.sh
 # Archivos de entorno
 .env
 *.env
+target/

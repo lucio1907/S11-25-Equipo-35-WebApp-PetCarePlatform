@@ -12,6 +12,7 @@ com/pethealthtracker/controller/AuthController.class
 com/pethealthtracker/dto/reminders/ReminderRequestDTO.class
 com/pethealthtracker/model/User$UserBuilder.class
 com/pethealthtracker/config/AuditConfig.class
+com/pethealthtracker/dto/pets/PetRequestDTO$PetRequestDTOBuilder.class
 com/pethealthtracker/service/impl/UserServiceImpl.class
 com/pethealthtracker/model/enums/WeightUnit.class
 com/pethealthtracker/service/impl/FeedingScheduleServiceImpl.class
@@ -31,6 +32,7 @@ com/pethealthtracker/dto/ApiResponse.class
 com/pethealthtracker/model/FeedingSchedule.class
 com/pethealthtracker/dto/FeedingScheduleDto.class
 com/pethealthtracker/exception/BadRequestException.class
+com/pethealthtracker/dto/pets/PetResponseDTO$PetResponseDTOBuilder.class
 com/pethealthtracker/service/impl/AuthServiceImpl.class
 com/pethealthtracker/service/AuthService.class
 com/pethealthtracker/dto/reminders/ReminderRequestDTO$ReminderRequestDTOBuilder.class
@@ -42,18 +44,20 @@ com/pethealthtracker/security/UserDetailsImpl.class
 com/pethealthtracker/model/enums/ReminderType.class
 com/pethealthtracker/service/UserService.class
 com/pethealthtracker/PetHealthTrackerApplication.class
+com/pethealthtracker/controller/PetController.class
 com/pethealthtracker/security/JwtProperties.class
 com/pethealthtracker/dto/user/UserDto$UserDtoBuilder.class
-com/pethealthtracker/dto/pets/PetDTO.class
 com/pethealthtracker/dto/reminders/ReminderResponseDTO$ReminderResponseDTOBuilder.class
 com/pethealthtracker/model/Pet.class
 com/pethealthtracker/service/FeedingScheduleService.class
 com/pethealthtracker/service/ReminderService.class
 com/pethealthtracker/security/JwtAuthenticationFilter.class
+com/pethealthtracker/dto/pets/PetRequestDTO.class
 com/pethealthtracker/model/Reminder.class
 com/pethealthtracker/exception/ResourceNotFoundException.class
 com/pethealthtracker/dto/auth/JwtAuthResponse.class
 com/pethealthtracker/config/SecurityConfig.class
+com/pethealthtracker/dto/pets/PetResponseDTO.class
 com/pethealthtracker/controller/UserController.class
 com/pethealthtracker/config/ApplicationConfig$1.class
 com/pethealthtracker/exception/GlobalExceptionHandler.class

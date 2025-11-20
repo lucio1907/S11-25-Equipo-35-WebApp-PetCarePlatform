@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 @Tag(name = "Autenticación (users)", description = "API para autenticación y gestión de cuentas")
 @Validated
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

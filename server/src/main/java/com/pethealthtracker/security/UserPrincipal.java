@@ -21,6 +21,7 @@ public class UserPrincipal implements UserDetails {
 
     private final Long id;
     private final String email;
+    private final Boolean emailVerified;
     @JsonIgnore
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -31,6 +32,7 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
+                user.getEmailVerified(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );
