@@ -45,11 +45,12 @@ public class OpenApiConfig {
                                 )
                 )
                 .info(new Info()
-                        .title("Pet Health Tracker API")
+                        .title("API - Seguimiento de Salud para Mascotas ( API - Pet Health Tracker)")
                         .description("""
-                            <h2>API para o sistema de monitoramento de saúde de pets</h2>
-                            <p>Esta documentação descreve os endpoints disponíveis na API do Pet Health Tracker.</p>
-                            <p><strong>Autenticação:</strong> Use o endpoint de login para obter um token JWT e clique no botão 'Authorize' (cadeado) para incluí-lo nas requisições.</p>
+                            <h2>API para el sistema de seguimiento de salud de mascotas</h2>
+                            <p>Esta documentación describe los endpoints disponibles en la API de Pet Health Tracker.</p>
+                            <p><strong>Autenticación:</strong> Utilice el endpoint de inicio de sesión para obtener un token JWT y haga clic en el botón 'Authorize' (candado) para incluirlo en las solicitudes.</p>
+                            <p><strong>Nota:</strong> Todos los endpoints requieren autenticación, excepto los de registro e inicio de sesión.</p>
                             """)
                         .version("1.0.0")
                         .license(new License()

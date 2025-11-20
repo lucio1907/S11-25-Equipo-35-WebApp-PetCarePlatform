@@ -7,19 +7,21 @@ import com.pethealthtracker.dto.auth.RegisterRequest;
 import com.pethealthtracker.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
 
+import jakarta.validation.Valid;
 /**
- * Controlador para gerenciar autenticação e registro de usuários.
- * Fornece endpoints para login, registro, recuperação de senha e verificação de e-mail.
+ * Controlador para gestionar autenticación y registro de usuarios.
+ * Proporciona endpoints para inicio de sesión, registro, recuperación de contraseña y verificación de correo electrónico.
+ * 
+ * @apiNote Tabla de base de datos: users
  */
-@Tag(name = "Autenticação", description = "API para autenticação e gerenciamento de contas")
+@Tag(name = "Autenticación (users)", description = "API para autenticación y gestión de cuentas")
 @Validated
 @RestController
 @RequestMapping("/api/auth")
@@ -28,42 +30,42 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "Autentica um usuário e retorna um token JWT")
+    @Operation(summary = "Autentica un usuario y devuelve un token JWT")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<JwtAuthResponse>> authenticateUser(
             @Valid @RequestBody LoginRequest loginRequest) {
         JwtAuthResponse response = authService.authenticateUser(loginRequest);
         return ResponseEntity.ok(ApiResponse.<JwtAuthResponse>builder()
                 .success(true)
-                .message("Autenticação realizada com sucesso")
+                .message("Inicio de sesión exitoso")
                 .data(response)
                 .build());
     }
 
-    @Operation(summary = "Registra um novo usuário")
+    @Operation(summary = "Registra un nuevo usuario en el sistema")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<JwtAuthResponse>> registerUser(
             @Valid @RequestBody RegisterRequest registerRequest) {
         JwtAuthResponse response = authService.registerUser(registerRequest);
         return ResponseEntity.ok(ApiResponse.<JwtAuthResponse>builder()
                 .success(true)
-                .message("Usuário registrado com sucesso")
+                .message("Usuario registrado exitosamente")
                 .data(response)
                 .build());
     }
 
-    @Operation(summary = "Solicita a redefinição de senha")
+    @Operation(summary = "Solicita el restablecimiento de contraseña")
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiResponse<Void>> forgotPassword(
             @RequestParam @NotBlank @Email String email) {
         authService.requestPasswordReset(email);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)
-                .message("Link de redefinição de senha enviado para o e-mail")
+                .message("Se ha enviado un enlace de restablecimiento de contraseña al correo electrónico proporcionado")
                 .build());
     }
 
-    @Operation(summary = "Redefine a senha usando o token de redefinição")
+    @Operation(summary = "Restablece la contraseña usando el token de restablecimiento")
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(
             @RequestParam @NotBlank String token,
@@ -71,11 +73,11 @@ public class AuthController {
         authService.resetPassword(token, newPassword);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)
-                .message("Senha redefinida com sucesso")
+                .message("Contraseña restablecida exitosamente")
                 .build());
     }
 
-    @Operation(summary = "Verifica o e-mail do usuário usando o token de verificação")
+    @Operation(summary = "Verifica el correo electrónico del usuario usando el token de verificación")
     @GetMapping("/verify-email")
     public ResponseEntity<ApiResponse<Void>> verifyEmail(
             @RequestParam @NotBlank String token) {
@@ -83,13 +85,13 @@ public class AuthController {
         if (isVerified) {
             return ResponseEntity.ok(ApiResponse.<Void>builder()
                     .success(true)
-                    .message("E-mail verificado com sucesso")
+                    .message("Correo electrónico verificado exitosamente")
                     .build());
         } else {
             return ResponseEntity.badRequest()
                     .body(ApiResponse.<Void>builder()
                             .success(false)
-                            .message("Token de verificação inválido ou expirado")
+                            .message("Token de verificación inválido o expirado")
                             .build());
         }
     }

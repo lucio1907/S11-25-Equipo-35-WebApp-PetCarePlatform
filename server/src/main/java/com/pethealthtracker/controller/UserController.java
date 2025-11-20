@@ -21,7 +21,7 @@ import java.util.List;
  * Controlador para gestionar las operaciones de usuario.
  * Permite a los usuarios autenticados gestionar su perfil y a los administradores gestionar todos los usuarios.
  */
-@Tag(name = "Usuarios", description = "API para la gestión de usuarios")
+@Tag(name = "Usuarios (users)", description = "API para la gestión de usuarios")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

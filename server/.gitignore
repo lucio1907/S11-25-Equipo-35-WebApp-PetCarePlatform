@@ -2,3 +2,7 @@ set_env.sh
 
 .vscode/
 .idea/
+
+# Archivos de entorno
+.env
+*.env
