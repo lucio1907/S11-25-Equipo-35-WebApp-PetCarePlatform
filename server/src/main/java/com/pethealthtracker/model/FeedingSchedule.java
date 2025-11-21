@@ -1,6 +1,9 @@
 package com.pethealthtracker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pethealthtracker.model.enums.FeedingFrequency;
+import com.pethealthtracker.model.enums.PortionUnit;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,14 +34,14 @@ public class FeedingSchedule {
     private Double portionSize;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "portion_unit", columnDefinition = "ENUM('g', 'kg', 'cup', 'ml', 'oz') DEFAULT 'g'")
+    @Column(name = "portion_unit", length = 10) 
     private PortionUnit portionUnit = PortionUnit.G;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "feeding_frequency", nullable = false, columnDefinition = "ENUM('daily_once', 'daily_twice', 'daily_thrice', 'custom')")
+    @Column(name = "feeding_frequency", nullable = false, length = 20)
     private FeedingFrequency feedingFrequency;
 
-    @Column(name = "custom_schedule", columnDefinition = "JSON")
+    @Column(name = "custom_schedule", columnDefinition = "jsonb") 
     private String customSchedule;
 
     @Column(name = "special_instructions", columnDefinition = "TEXT")

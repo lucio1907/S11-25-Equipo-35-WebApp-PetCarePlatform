@@ -1,4 +1,4 @@
-package com.pethealthtracker.model;
+package com.pethealthtracker.model.enums;
 
 public enum PortionUnit {
     G("g"),

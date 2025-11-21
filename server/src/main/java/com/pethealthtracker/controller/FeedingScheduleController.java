@@ -1,7 +1,7 @@
 package com.pethealthtracker.controller;
 
 import com.pethealthtracker.dto.ApiResponse;
-import com.pethealthtracker.dto.FeedingScheduleDto;
+import com.pethealthtracker.dto.feeding.FeedingScheduleDto;
 import com.pethealthtracker.service.FeedingScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

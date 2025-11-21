@@ -1,8 +1,8 @@
 package com.pethealthtracker.service;
 
-import com.pethealthtracker.dto.FeedingScheduleDto;
-
 import java.util.List;
+
+import com.pethealthtracker.dto.feeding.FeedingScheduleDto;
 
 public interface FeedingScheduleService {
     List<FeedingScheduleDto> getFeedingSchedulesByPetId(Long petId);

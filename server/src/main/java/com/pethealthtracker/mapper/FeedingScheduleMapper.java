@@ -1,6 +1,6 @@
 package com.pethealthtracker.mapper;
 
-import com.pethealthtracker.dto.FeedingScheduleDto;
+import com.pethealthtracker.dto.feeding.FeedingScheduleDto;
 import com.pethealthtracker.model.FeedingSchedule;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

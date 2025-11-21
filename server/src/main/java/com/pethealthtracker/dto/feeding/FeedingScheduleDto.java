@@ -1,8 +1,9 @@
-package com.pethealthtracker.dto;
+package com.pethealthtracker.dto.feeding;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pethealthtracker.model.FeedingFrequency;
-import com.pethealthtracker.model.PortionUnit;
+import com.pethealthtracker.model.enums.FeedingFrequency;
+import com.pethealthtracker.model.enums.PortionUnit;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;

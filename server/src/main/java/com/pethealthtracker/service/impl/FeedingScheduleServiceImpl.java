@@ -1,6 +1,6 @@
 package com.pethealthtracker.service.impl;
 
-import com.pethealthtracker.dto.FeedingScheduleDto;
+import com.pethealthtracker.dto.feeding.FeedingScheduleDto;
 import com.pethealthtracker.exception.ResourceNotFoundException;
 import com.pethealthtracker.mapper.FeedingScheduleMapper;
 import com.pethealthtracker.model.FeedingSchedule;
