@@ -2,7 +2,6 @@ import { apiUrl } from "../Api/apiUrl";
 
 export const postRegister = async (data) => {
   console.log("data", data);
-
   const response = await fetch(`${apiUrl}/auth/register`, {
     method: "POST",
     headers: {
@@ -11,16 +10,7 @@ export const postRegister = async (data) => {
     body: JSON.stringify(data),
   });
 
-  let json;
-  try {
-    json = await response.json();
-  } catch (e) {
-    json = { message: "Invalid JSON response", raw: await response.text() };
-  }
+  const result = await response.json();
 
-  if (!response.ok) {
-    throw json;
-  }
-
-  return json;
+  return result;
 };
