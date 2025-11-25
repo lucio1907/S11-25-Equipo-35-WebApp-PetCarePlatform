@@ -2,7 +2,6 @@ package com.pethealthtracker.config;
 
 import com.pethealthtracker.model.User;
 import com.pethealthtracker.repository.UserRepository;
-import com.pethealthtracker.security.UserDetailsImpl;
 import com.pethealthtracker.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
