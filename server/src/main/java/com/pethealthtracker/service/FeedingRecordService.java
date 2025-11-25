@@ -31,7 +31,6 @@ public class FeedingRecordService {
     private static final String PET_ID_REQUIRED = "El ID de la mascota es requerido";
 
     private final FeedingRecordRepository feedingRecordRepository;
-    private final PetRepository petRepository;
     private final FeedingScheduleRepository feedingScheduleRepository;
     private final FeedingRecordMapper feedingRecordMapper;
 
