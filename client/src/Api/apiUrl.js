@@ -1,1 +1,1 @@
-export const apiUrl = "https://mypetcloud.onrender.com/";
+export const apiUrl = "https://mypetcloud.onrender.com/api";

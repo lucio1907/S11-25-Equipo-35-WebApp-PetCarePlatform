@@ -1,6 +1,5 @@
-import Register from "./src/Screens/Register";
-import LoginScreen from "./src/Screens/Login";
-import { View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import RootStack from "./src/Navigation/RootStack";
 
 export default function App() {
   return (
