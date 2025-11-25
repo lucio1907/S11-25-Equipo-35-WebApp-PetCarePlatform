@@ -42,8 +42,8 @@ public class PetService {
         }
 
         // 3. Verificar si el número de microchip ya existe
-        if (petRequestDTO.getMicrochipNumber() != null && 
-            petRepository.findByMicrochipNumber(petRequestDTO.getMicrochipNumber()).isPresent()) {
+        if (petRequestDTO.getMicrochipNumber() != null &&
+                petRepository.findByMicrochipNumber(petRequestDTO.getMicrochipNumber()).isPresent()) {
             throw new ResourceNotFoundException("El número de microchip ya está registrado para otra mascota.");
         }
 
@@ -67,8 +67,8 @@ public class PetService {
     public PetResponseDTO getPetByNameAndUserId(String name, Long userId) {
         // Usa la consulta del repositorio que verifica el nombre Y el usuario
         Pet pet = petRepository.findByNameAndUserId(name, userId)
-            .orElseThrow(() -> new ResourceNotFoundException("La mascota no esta registrada para este usuario."));
-            
+                .orElseThrow(() -> new ResourceNotFoundException("La mascota no esta registrada para este usuario."));
+
         return PetService.mapToResponseDTO(pet);
     }
 
@@ -77,15 +77,18 @@ public class PetService {
     // -----------------------------------------------------
     @Transactional(readOnly = true)
     public List<PetResponseDTO> getPetsByUserId(Long userId) {
-        // Busca todas las mascotas del usuario
+
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Usuario", "id", userId);
+        }
+
         List<Pet> pets = petRepository.findByUserId(userId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado")); 
 
         if (pets.isEmpty()) {
             throw new ResourceNotFoundException("El usuario no tiene mascotas registradas.");
         }
-        
-        // Mapear la lista de entidades a la lista de DTOs
+
+        // 4. Mapear y devolver
         return pets.stream()
                 .map(PetService::mapToResponseDTO)
                 .collect(Collectors.toList());
@@ -98,7 +101,7 @@ public class PetService {
     public PetResponseDTO updatePet(Long petId, Long userId, PetRequestDTO requestDTO) {
         // 1. Verificar existencia y propiedad
         Pet existingPet = petRepository.findByIdAndUserId(petId, userId)
-            .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", petId));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", petId));
 
         // 2. Actualizar campos (Usamos Setters de Lombok)
         existingPet.setName(requestDTO.getName());
@@ -113,13 +116,13 @@ public class PetService {
         existingPet.setGender(requestDTO.getGender());
         existingPet.setHealthNotes(requestDTO.getHealthNotes());
         // NO se permite cambiar el userId ni isActive en un PUT normal.
-        
+
         // 3. Recalcular la edad
         PetService.calculateAge(existingPet);
 
         // 4. Guardar
         Pet updatedPet = petRepository.save(existingPet);
-        
+
         // 5. Devolver DTO
         return PetService.mapToResponseDTO(updatedPet);
     }
@@ -134,8 +137,8 @@ public class PetService {
         }
 
         Pet existingPet = petRepository.findByIdAndUserId(petId, userId)
-            .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", petId));
-        
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota", "id", petId));
+
         if (!existingPet.getUser().getId().equals(userId)) {
             throw new ResourceNotFoundException("La mascota no pertenece al usuario especificado.");
         }
@@ -146,24 +149,24 @@ public class PetService {
     }
 
     // --- MAPPERS Y LÓGICA ESTÁTICA ---
-    
+
     // El método de mapeo del DTO de petición a la entidad
     private static Pet mapDtoToEntity(PetRequestDTO petRequestDTO, User owner) {
         return Pet.builder()
-            .user(owner)
-            .name(petRequestDTO.getName())
-            .species(petRequestDTO.getSpecies())
-            .breed(petRequestDTO.getBreed())
-            .dateOfBirth(petRequestDTO.getDateOfBirth())
-            .weight(petRequestDTO.getWeight())
-            .weightUnit(petRequestDTO.getWeightUnit())
-            .profilePictureUrl(petRequestDTO.getProfilePictureUrl())
-            .microchipNumber(petRequestDTO.getMicrochipNumber())
-            .color(petRequestDTO.getColor())
-            .gender(petRequestDTO.getGender())
-            .healthNotes(petRequestDTO.getHealthNotes())
-            .isActive(true)
-            .build();
+                .user(owner)
+                .name(petRequestDTO.getName())
+                .species(petRequestDTO.getSpecies())
+                .breed(petRequestDTO.getBreed())
+                .dateOfBirth(petRequestDTO.getDateOfBirth())
+                .weight(petRequestDTO.getWeight())
+                .weightUnit(petRequestDTO.getWeightUnit())
+                .profilePictureUrl(petRequestDTO.getProfilePictureUrl())
+                .microchipNumber(petRequestDTO.getMicrochipNumber())
+                .color(petRequestDTO.getColor())
+                .gender(petRequestDTO.getGender())
+                .healthNotes(petRequestDTO.getHealthNotes())
+                .isActive(true)
+                .build();
     }
 
     // El método de mapeo de la entidad al DTO de respuesta
@@ -171,25 +174,25 @@ public class PetService {
         PetService.calculateAge(pet);
 
         return PetResponseDTO.builder()
-            .id(pet.getId())
-            .userId(pet.getUser().getId())
-            .name(pet.getName())
-            .species(pet.getSpecies())
-            .breed(pet.getBreed())
-            .dateOfBirth(pet.getDateOfBirth())
-            .ageYears(pet.getAgeYears())
-            .ageMonths(pet.getAgeMonths())
-            .weight(pet.getWeight())
-            .weightUnit(pet.getWeightUnit())
-            .profilePictureUrl(pet.getProfilePictureUrl())
-            .microchipNumber(pet.getMicrochipNumber())
-            .color(pet.getColor())
-            .gender(pet.getGender())
-            .healthNotes(pet.getHealthNotes())
-            .isActive(pet.getIsActive())
-            .createdAt(pet.getCreatedAt())
-            .updatedAt(pet.getUpdatedAt())
-            .build();
+                .id(pet.getId())
+                .userId(pet.getUser().getId())
+                .name(pet.getName())
+                .species(pet.getSpecies())
+                .breed(pet.getBreed())
+                .dateOfBirth(pet.getDateOfBirth())
+                .ageYears(pet.getAgeYears())
+                .ageMonths(pet.getAgeMonths())
+                .weight(pet.getWeight())
+                .weightUnit(pet.getWeightUnit())
+                .profilePictureUrl(pet.getProfilePictureUrl())
+                .microchipNumber(pet.getMicrochipNumber())
+                .color(pet.getColor())
+                .gender(pet.getGender())
+                .healthNotes(pet.getHealthNotes())
+                .isActive(pet.getIsActive())
+                .createdAt(pet.getCreatedAt())
+                .updatedAt(pet.getUpdatedAt())
+                .build();
     }
 
     // Lógica para calcular la edad
