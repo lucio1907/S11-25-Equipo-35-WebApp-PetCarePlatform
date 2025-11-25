@@ -1,23 +1,29 @@
+import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import { Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
 
-import { useLogicLogin } from "../Hooks/uselogicLogin";
-
 export default function LoginScreen() {
+  const [showPass, setShowPass] = useState(false);
+
   const {
-    onSubmit,
-    errors,
-    showPass,
-    setShowPass,
     control,
     handleSubmit,
-    navigation,
-  } = useLogicLogin();
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+      console.log("login data:", data);
+      // acá llamás a tu servicio de login
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,13 +34,17 @@ export default function LoginScreen() {
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Sign in to continue</Text>
 
+        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
           name="email"
           rules={{
             required: "Email is required",
-            pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email format" },
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Invalid email format",
+            },
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
@@ -52,6 +62,7 @@ export default function LoginScreen() {
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
 
+        {/* PASSWORD */}
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
@@ -73,7 +84,6 @@ export default function LoginScreen() {
               />
             )}
           />
-
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
             <Text style={styles.eye}>👁️</Text>
           </TouchableOpacity>
@@ -82,6 +92,7 @@ export default function LoginScreen() {
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
 
+        {/* BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
@@ -89,14 +100,10 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
+        {/* LINK */}
         <Text style={styles.bottomText}>
           Don’t have an account?
-          <Text
-            onPress={() => navigation.navigate("Register")}
-            style={styles.signIn}
-          >
-            Create Account
-          </Text>
+          <Text style={styles.signIn}> Create Account</Text>
         </Text>
       </View>
 
