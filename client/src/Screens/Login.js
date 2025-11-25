@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
@@ -9,7 +11,7 @@ import Logo from "../assets/logo.png";
 
 export default function LoginScreen() {
   const [showPass, setShowPass] = useState(false);
-
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -19,7 +21,6 @@ export default function LoginScreen() {
   const onSubmit = async (data) => {
     try {
       console.log("login data:", data);
-      // acá llamás a tu servicio de login
     } catch (error) {
       console.log("error", error);
     }
@@ -33,8 +34,6 @@ export default function LoginScreen() {
       <View style={styles.form}>
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Sign in to continue</Text>
-
-        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
@@ -61,8 +60,6 @@ export default function LoginScreen() {
         {errors.email && (
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
-
-        {/* PASSWORD */}
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
@@ -91,22 +88,22 @@ export default function LoginScreen() {
         {errors.password && (
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
-
-        {/* BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
         >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
-
-        {/* LINK */}
         <Text style={styles.bottomText}>
           Don’t have an account?
-          <Text style={styles.signIn}> Create Account</Text>
+          <Text
+            onPress={() => navigation.navigate("Register")}
+            style={styles.signIn}
+          >
+            Create Account
+          </Text>
         </Text>
       </View>
-
       <Image source={Gtito} style={styles.bottomImage} resizeMode="contain" />
     </View>
   );
