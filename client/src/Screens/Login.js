@@ -28,13 +28,17 @@ export default function LoginScreen() {
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Sign in to continue</Text>
 
+        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
           name="email"
           rules={{
             required: "Email is required",
-            pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email format" },
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Invalid email format",
+            },
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
@@ -73,7 +77,6 @@ export default function LoginScreen() {
               />
             )}
           />
-
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
             <Text style={styles.eye}>👁️</Text>
           </TouchableOpacity>
@@ -82,6 +85,7 @@ export default function LoginScreen() {
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
 
+        {/* BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
@@ -89,14 +93,10 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
+        {/* LINK */}
         <Text style={styles.bottomText}>
           Don’t have an account?
-          <Text
-            onPress={() => navigation.navigate("Register")}
-            style={styles.signIn}
-          >
-            Create Account
-          </Text>
+          <Text style={styles.signIn}> Create Account</Text>
         </Text>
       </View>
 
