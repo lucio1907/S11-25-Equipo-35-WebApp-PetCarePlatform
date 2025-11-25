@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import { Controller } from "react-hook-form";
-
-import { registerLogic } from "../Hooks/registerLogic";
+import { useForm, Controller } from "react-hook-form";
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
+
+import { postRegister } from "../Services/postRegister";
 
 export default function SignUpScreen() {
   const {
@@ -97,19 +98,21 @@ export default function SignUpScreen() {
         {errors.email && (
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
-
         <Text style={styles.label}>Phone</Text>
         <Controller
           control={control}
           name="phone"
           rules={{
             required: "Phone is required",
-            pattern: { value: /^[0-9+\- ]{6,20}$/, message: "Invalid phone" },
+            pattern: {
+              value: /^[0-9+\- ]{6,20}$/,
+              message: "Invalid phone number",
+            },
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={[styles.input, errors.phone && styles.errorInput]}
-              placeholder="Enter your phone"
+              placeholder="Enter your phone number"
               placeholderTextColor="#8A8A8A"
               value={value}
               onChangeText={onChange}
@@ -120,7 +123,6 @@ export default function SignUpScreen() {
         {errors.phone && (
           <Text style={styles.errorMsg}>{errors.phone.message}</Text>
         )}
-
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
