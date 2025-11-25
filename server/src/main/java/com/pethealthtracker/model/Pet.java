@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "pets")
@@ -34,6 +35,9 @@ public class Pet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Medication> medications;
 
     @Column(length = 100, nullable = false)
     private String name;
@@ -102,10 +106,22 @@ public class Pet {
             createdAt = LocalDateTime.now();
         }
         updatedAt = LocalDateTime.now();
+        normalizeData();
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+        normalizeData();
+    }
+
+    private void normalizeData() {
+        if (this.name != null) {
+            this.name = this.name.toLowerCase().trim();
+        }
+
+        if (this.color != null) {
+            this.color = this.color.toLowerCase().trim();
+        }
     }
 }

@@ -2,10 +2,11 @@ package com.pethealthtracker.dto.reminders;
 
 import com.pethealthtracker.model.enums.RecurrencePattern;
 import com.pethealthtracker.model.enums.ReminderType;
-import com.pethealthtracker.model.enums.ReminderType;
 
 import jakarta.persistence.Column;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

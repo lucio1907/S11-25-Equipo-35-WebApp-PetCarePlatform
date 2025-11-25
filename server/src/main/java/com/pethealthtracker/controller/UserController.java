@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Tag(name = "Usuarios (users)", description = "API para la gestión de usuarios")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {

@@ -8,7 +8,6 @@ import com.pethealthtracker.model.Pet;
 import com.pethealthtracker.repository.FeedingScheduleRepository;
 import com.pethealthtracker.repository.PetRepository;
 import com.pethealthtracker.service.FeedingScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,6 @@ public class FeedingScheduleServiceImpl implements FeedingScheduleService {
     private final FeedingScheduleRepository feedingScheduleRepository;
     private final PetRepository petRepository;
 
-    @Autowired
     public FeedingScheduleServiceImpl(FeedingScheduleRepository feedingScheduleRepository,
                                     PetRepository petRepository) {
         this.feedingScheduleRepository = feedingScheduleRepository;

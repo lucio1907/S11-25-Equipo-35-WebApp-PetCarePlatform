@@ -3,7 +3,9 @@ package com.pethealthtracker.dto.pets;
 import com.pethealthtracker.model.enums.Gender;
 import com.pethealthtracker.model.enums.PetSpecies;
 import com.pethealthtracker.model.enums.WeightUnit;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
