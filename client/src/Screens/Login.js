@@ -7,9 +7,7 @@ import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
 
-import { postRegister } from "../Services/postRegister";
-
-export default function SignUpScreen() {
+export default function LoginScreen() {
   const [showPass, setShowPass] = useState(false);
 
   const {
@@ -20,8 +18,8 @@ export default function SignUpScreen() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await postRegister(data);
-      console.log("response", response);
+      console.log("login data:", data);
+      // acá llamás a tu servicio de login
     } catch (error) {
       console.log("error", error);
     }
@@ -31,53 +29,12 @@ export default function SignUpScreen() {
     <View style={styles.container}>
       <Image source={perito} style={styles.topImage} />
       <Image source={Logo} style={styles.logo} resizeMode="contain" />
+
       <View style={styles.form}>
-        <Text style={styles.title}>Create Account</Text>
-        <Text style={styles.subtitle}>Join our pet-loving community!</Text>
-        <Text style={styles.label}>Name</Text>
-        <View style={styles.row}>
-          <Controller
-            control={control}
-            name="firstName"
-            rules={{ required: "First name is required" }}
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.halfInput,
-                  errors.firstName && styles.errorInput,
-                ]}
-                placeholder="First name"
-                placeholderTextColor="#8A8A8A"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="lastName"
-            rules={{ required: "Last name is required" }}
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.halfInput,
-                  errors.lastName && styles.errorInput,
-                ]}
-                placeholder="Last name"
-                placeholderTextColor="#8A8A8A"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-        </View>
-        {(errors.firstName || errors.lastName) && (
-          <Text style={styles.errorMsg}>
-            {errors.firstName?.message || errors.lastName?.message}
-          </Text>
-        )}
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Sign in to continue</Text>
+
+        {/* EMAIL */}
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
@@ -97,37 +54,15 @@ export default function SignUpScreen() {
               value={value}
               onChangeText={onChange}
               keyboardType="email-address"
+              autoCapitalize="none"
             />
           )}
         />
         {errors.email && (
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
-        <Text style={styles.label}>Phone</Text>
-        <Controller
-          control={control}
-          name="phone"
-          rules={{
-            required: "Phone is required",
-            pattern: {
-              value: /^[0-9+\- ]{6,20}$/,
-              message: "Invalid phone number",
-            },
-          }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={[styles.input, errors.phone && styles.errorInput]}
-              placeholder="Enter your phone number"
-              placeholderTextColor="#8A8A8A"
-              value={value}
-              onChangeText={onChange}
-              keyboardType="phone-pad"
-            />
-          )}
-        />
-        {errors.phone && (
-          <Text style={styles.errorMsg}>{errors.phone.message}</Text>
-        )}
+
+        {/* PASSWORD */}
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
@@ -140,11 +75,12 @@ export default function SignUpScreen() {
             render={({ field: { onChange, value } }) => (
               <TextInput
                 style={styles.inputRowText}
-                placeholder="Create a password"
+                placeholder="Enter your password"
                 secureTextEntry={!showPass}
                 placeholderTextColor="#8A8A8A"
                 value={value}
                 onChangeText={onChange}
+                autoCapitalize="none"
               />
             )}
           />
@@ -156,18 +92,21 @@ export default function SignUpScreen() {
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
 
+        {/* BUTTON */}
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={styles.buttonText}>Sign Up</Text>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
+        {/* LINK */}
         <Text style={styles.bottomText}>
-          Already have an account?
-          <Text style={styles.signIn}> Sign In</Text>
+          Don’t have an account?
+          <Text style={styles.signIn}> Create Account</Text>
         </Text>
       </View>
+
       <Image source={Gtito} style={styles.bottomImage} resizeMode="contain" />
     </View>
   );
