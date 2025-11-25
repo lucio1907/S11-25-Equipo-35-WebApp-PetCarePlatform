@@ -1,6 +1,14 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
@@ -11,6 +19,7 @@ import { postRegister } from "../Services/postRegister";
 
 export default function SignUpScreen() {
   const [showPass, setShowPass] = useState(false);
+  const navigation = useNavigation();
 
   const {
     control,
@@ -21,8 +30,19 @@ export default function SignUpScreen() {
   const onSubmit = async (data) => {
     try {
       const response = await postRegister(data);
+
+      Alert.alert("Success", "Account created successfully!", [
+        {
+          text: "Go to Login",
+          onPress: () => navigation.navigate("Login"),
+        },
+      ]);
+
       console.log("response", response);
     } catch (error) {
+      const message = error.message || "Registration failed";
+
+      Alert.alert("Error", message);
       console.log("error", error);
     }
   };
@@ -54,6 +74,7 @@ export default function SignUpScreen() {
               />
             )}
           />
+
           <Controller
             control={control}
             name="lastName"
@@ -84,10 +105,7 @@ export default function SignUpScreen() {
           name="email"
           rules={{
             required: "Email is required",
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: "Invalid email format",
-            },
+            pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email" },
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
@@ -109,15 +127,12 @@ export default function SignUpScreen() {
           name="phone"
           rules={{
             required: "Phone is required",
-            pattern: {
-              value: /^[0-9+\- ]{6,20}$/,
-              message: "Invalid phone number",
-            },
+            pattern: { value: /^[0-9+\- ]{6,20}$/, message: "Invalid phone" },
           }}
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={[styles.input, errors.phone && styles.errorInput]}
-              placeholder="Enter your phone number"
+              placeholder="Enter your phone"
               placeholderTextColor="#8A8A8A"
               value={value}
               onChangeText={onChange}
@@ -165,9 +180,15 @@ export default function SignUpScreen() {
 
         <Text style={styles.bottomText}>
           Already have an account?
-          <Text style={styles.signIn}> Sign In</Text>
+          <Text
+            style={styles.signIn}
+            onPress={() => navigation.navigate("Login")}
+          >
+            Sign In
+          </Text>
         </Text>
       </View>
+
       <Image source={Gtito} style={styles.bottomImage} resizeMode="contain" />
     </View>
   );
