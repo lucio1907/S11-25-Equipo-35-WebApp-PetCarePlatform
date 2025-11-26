@@ -19,22 +19,30 @@ public class PetHealthTrackerApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
+        // 1. Obtener el protocolo (http o https)
+        // Verificamos si SSL está habilitado, si no, por defecto es "http"
+        boolean isSsl = env.getProperty("server.ssl.enabled", Boolean.class, false);
+        String protocol = isSsl ? "https" : "http";
+
+        // 2. Obtener el Host (Dominio o IP)
+        String host = env.getProperty("server.host", "localhost");
+
+        // 3. Tu código existente para Puerto y ContextPath
         String port = env.getProperty("server.port", "8080");
         String contextPath = env.getProperty("server.servlet.context-path", "/");
-        
+
         // Asegurarse de que el contextPath termine con /
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
-        
-        // Construir las URLs
-        String apiUrl = "http://localhost:%s%s".formatted(port, contextPath);
-        String docsUrl = "http://localhost:%s%sswagger-ui.html".formatted(port, contextPath);
-        
+
+        // 4. Construir las URLs dinámicamente
+        String apiUrl = "%s://%s:%s%s".formatted(protocol, host, port, contextPath);
+        String docsUrl = "%s://%s:%s%sswagger-ui.html".formatted(protocol, host, port, contextPath);
+
         // Mensaje formateado
-        String message = (
-                """
-                
+        String message = ("""
+
                 ╔════════════════════════════════════════════════════════════════════╗
                 ║                                                                    ║
                 ║   🐾  ¡Pet Health Tracker está en funcionamiento! 🐾               ║
@@ -46,9 +54,8 @@ public class PetHealthTrackerApplication {
                 ╚════════════════════════════════════════════════════════════════════╝
                 """).formatted(
                 apiUrl,
-                docsUrl
-        );
-        
+                docsUrl);
+
         System.out.println(message);
         System.out.println("🔍 Para detener la aplicación, presiona Ctrl + C");
     }
