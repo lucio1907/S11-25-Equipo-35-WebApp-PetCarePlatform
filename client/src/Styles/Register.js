@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     width: 120,
     height: 120,
     alignSelf: "flex-start",
+    pointerEvents: "none",
   },
 
   logo: {
@@ -136,5 +137,6 @@ export const styles = StyleSheet.create({
     right: 0,
     zIndex: 0,
     opacity: 0.6,
+    pointerEvents: "none",
   },
 });

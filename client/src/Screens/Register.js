@@ -1,59 +1,33 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { Controller } from "react-hook-form";
+
+import { registerLogic } from "../Hooks/registerLogic";
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
 
-import { postRegister } from "../Services/postRegister";
-
 export default function SignUpScreen() {
-  const [showPass, setShowPass] = useState(false);
-  const navigation = useNavigation();
-
   const {
+    onSubmit,
+    errors,
+    showPass,
+    setShowPass,
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    try {
-      const response = await postRegister(data);
-
-      Alert.alert("Success", "Account created successfully!", [
-        {
-          text: "Go to Login",
-          onPress: () => navigation.navigate("Login"),
-        },
-      ]);
-
-      console.log("response", response);
-    } catch (error) {
-      const message = error.message || "Registration failed";
-
-      Alert.alert("Error", message);
-      console.log("error", error);
-    }
-  };
+    navigation,
+  } = registerLogic();
 
   return (
     <View style={styles.container}>
       <Image source={perito} style={styles.topImage} />
       <Image source={Logo} style={styles.logo} resizeMode="contain" />
+
       <View style={styles.form}>
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.subtitle}>Join our pet-loving community!</Text>
+
         <Text style={styles.label}>Name</Text>
         <View style={styles.row}>
           <Controller
@@ -94,11 +68,13 @@ export default function SignUpScreen() {
             )}
           />
         </View>
+
         {(errors.firstName || errors.lastName) && (
           <Text style={styles.errorMsg}>
             {errors.firstName?.message || errors.lastName?.message}
           </Text>
         )}
+
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
@@ -121,6 +97,7 @@ export default function SignUpScreen() {
         {errors.email && (
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
+
         <Text style={styles.label}>Phone</Text>
         <Controller
           control={control}
@@ -143,6 +120,7 @@ export default function SignUpScreen() {
         {errors.phone && (
           <Text style={styles.errorMsg}>{errors.phone.message}</Text>
         )}
+
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
@@ -163,10 +141,12 @@ export default function SignUpScreen() {
               />
             )}
           />
+
           <TouchableOpacity onPress={() => setShowPass(!showPass)}>
             <Text style={styles.eye}>👁️</Text>
           </TouchableOpacity>
         </View>
+
         {errors.password && (
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
