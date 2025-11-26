@@ -21,17 +21,19 @@ import jakarta.validation.Valid;
  * 
  * @apiNote Tabla de base de datos: users
  */
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @Tag(name = "Autenticación (users)", description = "API para autenticación y gestión de cuentas")
 @Validated
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     @Operation(summary = "Autentica un usuario y devuelve un token JWT")
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<ApiResponse<JwtAuthResponse>> authenticateUser(
             @Valid @RequestBody LoginRequest loginRequest) {
         JwtAuthResponse response = authService.authenticateUser(loginRequest);
@@ -43,7 +45,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Registra un nuevo usuario en el sistema")
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<ApiResponse<JwtAuthResponse>> registerUser(
             @Valid @RequestBody RegisterRequest registerRequest) {
         JwtAuthResponse response = authService.registerUser(registerRequest);
@@ -55,7 +57,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Solicita el restablecimiento de contraseña")
-    @PostMapping("/forgot-password")
+    @PostMapping("/auth/forgot-password")
     public ResponseEntity<ApiResponse<Void>> forgotPassword(
             @RequestParam @NotBlank @Email String email) {
         authService.requestPasswordReset(email);
@@ -66,7 +68,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Restablece la contraseña usando el token de restablecimiento")
-    @PostMapping("/reset-password")
+    @PostMapping("/auth/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(
             @RequestParam @NotBlank String token,
             @RequestParam @NotBlank String newPassword) {
@@ -78,7 +80,7 @@ public class AuthController {
     }
 
     @Operation(summary = "Verifica el correo electrónico del usuario usando el token de verificación")
-    @GetMapping("/verify-email")
+    @GetMapping("/auth/verify-email")
     public ResponseEntity<ApiResponse<Void>> verifyEmail(
             @RequestParam @NotBlank String token) {
         boolean isVerified = authService.verifyEmail(token);
@@ -95,4 +97,14 @@ public class AuthController {
                             .build());
         }
     }
+
+    @Operation(
+        summary = "Iniciar Sesión con Google",
+        description = "Redirige al usuario a la página de autenticación de Google." +
+        "⚠️ **IMPORTANTE:** Este endpoint NO debe ser llamado con AJAX/Axios. " +
+        "El frontend debe navegar directamente a esta URL o usar un enlace."
+    )
+    @GetMapping("/google/login")
+    public void googleLogin(@RequestParam String param) {}
+    
 }

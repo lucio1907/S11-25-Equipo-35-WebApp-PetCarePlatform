@@ -8,5 +8,10 @@
     "name": "app.jwt.expiration-ms",
     "type": "java.lang.String",
     "description": "JWT token expiration time in milliseconds"
+  },
+  {
+    "name": "app.oauth.default-password",
+    "type": "java.lang.String",
+    "description": "Fake password to save Google Account in DB"
   }
 ]}

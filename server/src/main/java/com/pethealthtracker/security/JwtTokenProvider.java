@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -24,12 +25,35 @@ public class JwtTokenProvider {
     private int jwtExpirationMs;
 
     public String generateToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
         
+        String email;
+        Long id = 0L; // ID por defecto para usuarios de Google (temporal)
+        Boolean emailVerified = false;
+
+        // Caso 1: Usuario logueado con Email/Password (Tu DB)
+        if (principal instanceof UserPrincipal) {
+            UserPrincipal userPrincipal = (UserPrincipal) principal;
+            email = userPrincipal.getEmail();
+            id = userPrincipal.getId();
+            emailVerified = userPrincipal.getEmailVerified();
+        } 
+        // Caso 2: Usuario logueado con Google (OAuth2)
+        else if (principal instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+            email = oidcUser.getEmail();
+            emailVerified = true; // Google siempre verifica el email
+        } 
+        // Fallback
+        else {
+            email = principal.toString();
+        }
+
         return Jwts.builder()
-                .subject(userPrincipal.getEmail())
-                .claim("id", userPrincipal.getId())
-                .claim("emailVerified", userPrincipal.getEmailVerified())
+                .subject(email)
+                .claim("id", id)
+                .claim("emailVerified", emailVerified)
+                .claim("email", email)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key())
@@ -46,7 +70,11 @@ public class JwtTokenProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return Long.parseLong(claims.getSubject());
+        try {
+            return Long.parseLong(claims.getSubject());
+        } catch (NumberFormatException e) {
+            return 0L; 
+        }
     }
 
     public String getUsernameFromJWT(String token) {
