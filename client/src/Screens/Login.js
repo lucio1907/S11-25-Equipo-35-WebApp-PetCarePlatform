@@ -1,16 +1,14 @@
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { useNavigation } from "@react-navigation/native";
-
+import { Controller } from "react-hook-form";
 import { styles } from "../Styles/Register";
 
 import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
 
+import { logicLogin } from "../Hooks/logicLogin";
+
 export default function LoginScreen() {
-  const [showPass, setShowPass] = useState(false);
-  const navigation = useNavigation();
   const {
     onSubmit,
     errors,
@@ -18,16 +16,8 @@ export default function LoginScreen() {
     setShowPass,
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    try {
-      console.log("login data:", data);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+    navigation,
+  } = logicLogin();
 
   return (
     <View style={styles.container}>
@@ -37,6 +27,7 @@ export default function LoginScreen() {
       <View style={styles.form}>
         <Text style={styles.title}>Welcome Back</Text>
         <Text style={styles.subtitle}>Sign in to continue</Text>
+
         <Text style={styles.label}>Email</Text>
         <Controller
           control={control}
@@ -60,6 +51,7 @@ export default function LoginScreen() {
         {errors.email && (
           <Text style={styles.errorMsg}>{errors.email.message}</Text>
         )}
+
         <Text style={styles.label}>Password</Text>
         <View style={[styles.inputRow, errors.password && styles.errorInput]}>
           <Controller
@@ -89,12 +81,14 @@ export default function LoginScreen() {
         {errors.password && (
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
+
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
         >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
+
         <Text style={styles.bottomText}>
           Don’t have an account?
           <Text
@@ -105,6 +99,7 @@ export default function LoginScreen() {
           </Text>
         </Text>
       </View>
+
       <Image source={Gtito} style={styles.bottomImage} resizeMode="contain" />
     </View>
   );
