@@ -31,7 +31,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
     List<Pet> findBySpecies(String species);
 
     // 6. Encontrar mascota por ID de Mascota e ID de Usuario (Para verificación de propiedad)
-    Optional<Pet> findByIdAndUserId(Long petId, Long userId); 
-
+    Optional<Pet> findByIdAndUserId(Long petId, Long userId);
+    boolean existsByIdAndUserId(Long id, Long userId);
     Optional<Pet> findByMicrochipNumber(String microchipNumber);
 }
