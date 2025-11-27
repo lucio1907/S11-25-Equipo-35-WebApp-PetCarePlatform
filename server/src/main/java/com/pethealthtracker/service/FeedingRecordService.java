@@ -7,7 +7,6 @@ import com.pethealthtracker.model.FeedingRecord;
 import com.pethealthtracker.model.FeedingSchedule;
 import com.pethealthtracker.repository.FeedingRecordRepository;
 import com.pethealthtracker.repository.FeedingScheduleRepository;
-import com.pethealthtracker.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
