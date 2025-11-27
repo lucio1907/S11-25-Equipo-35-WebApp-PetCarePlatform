@@ -20,7 +20,7 @@ import java.util.Map;
 @Tag(name = "Vacunas", description = "Operaciones CRUD de registro de vacunas por mascota")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users/{userId}/pets/{petId}/vaccinations")
+@RequestMapping("/users/{userId}/pets/{petId}/vaccinations")
 public class VaccinationController {
     /*public VaccinationController(){
     }

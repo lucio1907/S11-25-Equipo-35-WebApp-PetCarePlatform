@@ -14,11 +14,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VaccinationRequestDTO {
-    @Schema(description = "ID de la mascota a la que se le aplica la vacuna", example = "1", required = true)
+    @Schema(description = "ID de la mascota a la que se le aplica la vacuna", example = "1")
     @NotNull(message = "El ID de la mascota es obligatorio")
     private Long petId;
 
-    @Schema(description = "Nombre de la vacuna", example = "Rabia", required = true)
+    @Schema(description = "Nombre de la vacuna", example = "Rabia")
     @NotBlank(message = "El nombre de la vacuna es obligatorio")
     @Size(max = 100, message = "El nombre no puede exceder los 100 caracteres")
     private String vaccineName;
@@ -31,7 +31,7 @@ public class VaccinationRequestDTO {
     @Size(max = 50, message = "El número de lote no puede exceder los 50 caracteres")
     private String batchNumber;
 
-    @Schema(description = "Fecha de administración de la vacuna (formato: yyyy-MM-dd)", example = "2023-01-15", required = true)
+    @Schema(description = "Fecha de administración de la vacuna (formato: yyyy-MM-dd)", example = "2023-01-15")
     @NotNull(message = "La fecha de administración es obligatoria")
     private LocalDate administrationDate;
 
