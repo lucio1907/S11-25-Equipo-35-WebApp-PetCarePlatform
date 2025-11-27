@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.pets.client",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -24,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "scheme": "mypetcloud",
+    "extra": {
+      "eas": {
+        "projectId": "6d00c9b1-20e3-47c0-a4f9-8954745e6418"
+      }
     }
   }
 }

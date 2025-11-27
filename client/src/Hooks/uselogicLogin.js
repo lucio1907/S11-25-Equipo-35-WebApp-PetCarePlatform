@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useToastMessages } from "../Utils/useToastMessages";
-import { login } from "../Services/Login";
+import { login as loginService } from "../Services/Login";
+import { useAuth } from "../Context/AuthContext";
 
-export const logicLogin = () => {
+export const useLogicLogin = () => {
   const [showPass, setShowPass] = useState(false);
   const navigation = useNavigation();
+  const { login } = useAuth();
 
   const {
     control,
@@ -20,22 +21,15 @@ export const logicLogin = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await login(data);
+      const response = await loginService(data);
 
-      if (!response.ok) {
+      if (response.success === false) {
         invalidCredentials(response?.message);
         return;
       }
-
-      if (!response?.data?.accessToken) {
-        noToken();
-        return;
-      }
-
-      await AsyncStorage.setItem("token", response.data.accessToken);
+      await login(response.data.accessToken);
 
       loginSuccess();
-      navigation.navigate("Home");
     } catch (error) {
       serverError();
     }
