@@ -6,7 +6,7 @@ import perito from "../assets/ImgTop.png";
 import Gtito from "../assets/imgBottom.png";
 import Logo from "../assets/logo.png";
 
-import { logicLogin } from "../Hooks/logicLogin";
+import { useLogicLogin } from "../Hooks/uselogicLogin";
 
 export default function LoginScreen() {
   const {
@@ -17,7 +17,7 @@ export default function LoginScreen() {
     control,
     handleSubmit,
     navigation,
-  } = logicLogin();
+  } = useLogicLogin();
 
   return (
     <View style={styles.container}>
