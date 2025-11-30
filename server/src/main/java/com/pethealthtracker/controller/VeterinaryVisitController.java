@@ -19,7 +19,7 @@ import java.util.Map;
 @Tag(name = "Visitas Veterinarias", description = "Operaciones CRUD de registros de visitas veterinarias")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users/{userId}/pets/{petId}/veterinary-visits")
+@RequestMapping("/users/{userId}/pets/{petId}/veterinary-visits")
 public class VeterinaryVisitController {
 
     private final VeterinaryVisitService veterinaryVisitService;
