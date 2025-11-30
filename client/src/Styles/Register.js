@@ -139,4 +139,10 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
     pointerEvents: "none",
   },
+
+  forgotPassword: {
+    color: "#ea9b56",
+    textAlign: "right",
+    marginBottom: 8,
+  },
 });
