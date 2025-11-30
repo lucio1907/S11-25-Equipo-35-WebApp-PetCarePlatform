@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pets/{petId}/deworming-treatments")
+@RequestMapping("/pets/{petId}/deworming-treatments")
 @RequiredArgsConstructor
 public class DewormingTreatmentController {
 
