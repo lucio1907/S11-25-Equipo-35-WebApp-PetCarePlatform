@@ -1,7 +1,6 @@
 package com.pethealthtracker.service;
 
 import com.pethealthtracker.dto.user.UserDto;
-import com.pethealthtracker.model.User;
 
 import java.util.List;
 
