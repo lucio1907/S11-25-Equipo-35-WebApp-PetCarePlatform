@@ -78,6 +78,12 @@ export default function LoginScreen() {
             <Text style={styles.eye}>👁️</Text>
           </TouchableOpacity>
         </View>
+        <Text
+            onPress={() => navigation.navigate("ForgotPassword")}
+            style={styles.forgotPassword}
+          >
+            Forgot Password?
+          </Text>
         {errors.password && (
           <Text style={styles.errorMsg}>{errors.password.message}</Text>
         )}
