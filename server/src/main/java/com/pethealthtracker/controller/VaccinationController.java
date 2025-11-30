@@ -20,22 +20,8 @@ import java.util.Map;
 @Tag(name = "Vacunas", description = "Operaciones CRUD de registro de vacunas por mascota")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users/{userId}/pets/{petId}/vaccinations")
+@RequestMapping("/api/users/{userId}/pets/{petId}/vaccinations")
 public class VaccinationController {
-    /*public VaccinationController(){
-    }
-    @Operation(
-            summary = "Obtener vacuna por ID",
-            description = "Retorna los detalles de un registro de vacuna específico.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Detalles de la vacuna."),
-                    @ApiResponse(responseCode = "404", description = "Vacuna no encontrada o no pertenece a la mascota/usuario.")
-            }
-    )
-    @GetMapping()
-    public ResponseEntity<String> getVaccinationById() {
-        return ResponseEntity.ok("vaccination");
-    }*/
     private final VaccinationService vaccinationService;
 
     @Operation(
