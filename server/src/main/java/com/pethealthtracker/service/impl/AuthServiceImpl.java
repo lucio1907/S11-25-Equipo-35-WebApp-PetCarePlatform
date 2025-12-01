@@ -12,6 +12,8 @@ import com.pethealthtracker.repository.UserRepository;
 import com.pethealthtracker.security.JwtTokenProvider;
 import com.pethealthtracker.security.UserPrincipal;
 import com.pethealthtracker.service.AuthService;
+import com.pethealthtracker.service.EmailService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
     private final UserMapper userMapper;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -39,19 +42,17 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        
+
         User user = userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-        
+
         UserDto userDto = userMapper.toDto(user);
-        
+
         return new JwtAuthResponse(jwt, userDto);
     }
 
@@ -70,17 +71,21 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setPhone(registerRequest.getPhone());
         user.setEmailVerified(false);
-        
+
+        String verificationToken = UUID.randomUUID().toString();
+        user.setVerificationToken(verificationToken);
+
         User result = userRepository.save(user);
-        
+
+        emailService.sendWelcomeEmail(result.getEmail(), result.getFirstName(), verificationToken);
+
         // Generate JWT token
         UserPrincipal userPrincipal = UserPrincipal.create(result);
         String jwt = tokenProvider.generateToken(
-                new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities())
-        );
-        
+                new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities()));
+
         UserDto userDto = userMapper.toDto(result);
-        
+
         return new JwtAuthResponse(jwt, userDto);
     }
 
@@ -89,12 +94,12 @@ public class AuthServiceImpl implements AuthService {
     public void requestPasswordReset(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
-                
+
         String token = UUID.randomUUID().toString();
         user.setResetPasswordToken(token);
         user.setResetTokenExpires(java.time.LocalDateTime.now().plusHours(1));
         userRepository.save(user);
-        
+
         // TODO: Send email with password reset link
     }
 
@@ -103,11 +108,11 @@ public class AuthServiceImpl implements AuthService {
     public void resetPassword(String token, String newPassword) {
         User user = userRepository.findByResetPasswordToken(token)
                 .orElseThrow(() -> new BadRequestException("Invalid or expired password reset token"));
-                
+
         if (user.getResetTokenExpires().isBefore(java.time.LocalDateTime.now())) {
             throw new BadRequestException("Password reset token has expired");
         }
-        
+
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetPasswordToken(null);
         user.setResetTokenExpires(null);
@@ -117,9 +122,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public boolean verifyEmail(String verificationToken) {
-        // TODO: Implement email verification logic
-        // This would typically involve finding a user by verification token
-        // and updating their email verification status
-        return false;
-    }
+        User user = userRepository.findByVerificationToken(verificationToken)
+                .orElseThrow(() -> new BadRequestException("No se pudo verificar el email"));
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setEmailVerified(true);
+        user.setVerificationToken(null);
+        userRepository.save(user);
+
+        return true;
+    };
 }
