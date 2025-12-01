@@ -3,7 +3,6 @@ import { useAuth } from "../Context/AuthContext";
 
 import Login from "../Screens/Login";
 import Register from "../Screens/Register";
-import Home from "../Screens/Homee";
 import Loading from "../Components/Loading";
 import ForgotPassword from "../Screens/ForgotPassword";
 import MyTabs from "./MyTabs";
@@ -12,7 +11,6 @@ const Stack = createNativeStackNavigator();
 
 export default function RootStack() {
   const { token, loading } = useAuth();
-  console.log(token);
 
   if (loading) return <Loading />;
 
