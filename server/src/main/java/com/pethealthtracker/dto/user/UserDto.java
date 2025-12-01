@@ -20,6 +20,7 @@ public class UserDto {
     private String lastName;
     private String phone;
     private String profilePictureUrl;
+    private String verificationToken;
     private Boolean emailVerified;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

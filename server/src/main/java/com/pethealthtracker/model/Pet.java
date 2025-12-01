@@ -124,4 +124,8 @@ public class Pet {
             this.color = this.color.toLowerCase().trim();
         }
     }
+
+    public Long getId() {
+        return id;
+    }
 }

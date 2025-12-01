@@ -21,12 +21,17 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import com.pethealthtracker.security.UserPrincipal;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 /**
  * Controlador para gestionar autenticación y registro de usuarios.
@@ -52,6 +57,12 @@ public class AuthController {
 
     @Value("${app.oauth.default-password}")
     private String oauthDefaultPassword;
+
+    @Value("classpath:html/verify_success.html")
+    private Resource successHtmlResource;
+
+    @Value("classpath:html/verify_error.html")
+    private Resource errorHtmlResource;
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -106,31 +117,33 @@ public class AuthController {
 
     @Operation(summary = "Verifica el correo electrónico del usuario usando el token de verificación")
     @GetMapping("/auth/verify-email")
-    public ResponseEntity<ApiResponse<Void>> verifyEmail(
-            @RequestParam @NotBlank String token) {
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         boolean isVerified = authService.verifyEmail(token);
-        if (isVerified) {
-            return ResponseEntity.ok(ApiResponse.<Void>builder()
-                    .success(true)
-                    .message("Correo electrónico verificado exitosamente")
-                    .build());
-        } else {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.<Void>builder()
-                            .success(false)
-                            .message("Token de verificación inválido o expirado")
-                            .build());
+
+        Resource resouceToLoad = isVerified ? successHtmlResource : errorHtmlResource;
+        try {
+            String htmlContent = StreamUtils.copyToString(
+                    resouceToLoad.getInputStream(),
+                    StandardCharsets.UTF_8);
+
+            if (isVerified) {
+                return ResponseEntity.ok(htmlContent);
+            } else {
+                return ResponseEntity.badRequest().body(htmlContent);
+            }
+
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Error cargando la página");
         }
     }
 
-    @Operation(
-    summary = "Iniciar Sesión con Google para Web.",
-    description = "Redirige al usuario a la página de autenticación de Google." +
-    "⚠️ **IMPORTANTE:** Este endpoint NO debe ser llamado con AJAX/Axios. " +
-    "El frontend debe navegar directamente a esta URL o usar un enlace."
-    )
+    @Operation(summary = "Iniciar Sesión con Google para Web.", description = "Redirige al usuario a la página de autenticación de Google."
+            +
+            "⚠️ **IMPORTANTE:** Este endpoint NO debe ser llamado con AJAX/Axios. " +
+            "El frontend debe navegar directamente a esta URL o usar un enlace.")
     @GetMapping("/google/web")
-    public void googleLogin(@RequestParam String param) {}
+    public void googleLogin(@RequestParam String param) {
+    }
 
     @Operation(summary = "Registrar/Login Usuario con Google (Móvil).", description = "Recibe el ID Token de Google desde la app móvil, lo verifica y devuelve un JWT de la aplicación.", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Autenticación exitosa", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = """
