@@ -5,6 +5,7 @@ import Login from "../Screens/Login";
 import Register from "../Screens/Register";
 import Home from "../Screens/Homee";
 import Loading from "../Components/Loading";
+import ForgotPassword from "../Screens/ForgotPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export default function RootStack() {
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           <Stack.Screen name="Register" component={Register} />
         </>
       )}
