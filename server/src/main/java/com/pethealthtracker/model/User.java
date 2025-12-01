@@ -75,6 +75,9 @@ public class User {
     @Column(name = "reset_token_expires")
     private LocalDateTime resetTokenExpires;
 
+    @Column(name = "verification_token")
+    private String verificationToken;
+
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pet> pets = new HashSet<>();

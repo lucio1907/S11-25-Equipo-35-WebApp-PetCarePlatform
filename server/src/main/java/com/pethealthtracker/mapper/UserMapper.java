@@ -30,6 +30,7 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .phone(user.getPhone())
                 .profilePictureUrl(user.getProfilePictureUrl())
+                .verificationToken(user.getVerificationToken())
                 .emailVerified(user.getEmailVerified())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
