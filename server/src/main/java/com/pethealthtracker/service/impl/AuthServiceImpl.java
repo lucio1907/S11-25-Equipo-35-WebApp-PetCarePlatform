@@ -15,6 +15,8 @@ import com.pethealthtracker.service.AuthService;
 import com.pethealthtracker.service.EmailService;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -100,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
         user.setResetTokenExpires(java.time.LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        // TODO: Send email with password reset link
+        emailService.sendPasswordResetEmail(user.getEmail(), user.getFirstName(), token);
     }
 
     @Override
