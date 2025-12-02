@@ -44,6 +44,8 @@ import lombok.RequiredArgsConstructor;
 
 import jakarta.validation.Valid;
 
+
+
 @Tag(name = "Autenticación (users)", description = "API para autenticación y gestión de cuentas")
 @Validated
 @RestController
@@ -63,6 +65,9 @@ public class AuthController {
 
     @Value("classpath:html/verify_error.html")
     private Resource errorHtmlResource;
+
+    @Value("classpath:html/reset_password.html")
+    private Resource resetPasswordHtmlResource;
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -103,17 +108,34 @@ public class AuthController {
                 .build());
     }
 
-    @Operation(summary = "Restablece la contraseña usando el token de restablecimiento")
+    @Operation(summary = "Restablece la contraseña usando el token recibido en el email")
     @PostMapping("/auth/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(
             @RequestParam @NotBlank String token,
             @RequestParam @NotBlank String newPassword) {
+            
         authService.resetPassword(token, newPassword);
+        
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)
                 .message("Contraseña restablecida exitosamente")
                 .build());
     }
+
+    @GetMapping("/auth/change-password-page")
+    public ResponseEntity<String> showChangePassword (@RequestParam("token") String token) {
+        try {
+            String htmlContent = StreamUtils.copyToString(
+                resetPasswordHtmlResource.getInputStream(),
+                StandardCharsets.UTF_8
+            );
+
+            return ResponseEntity.ok().body(htmlContent);
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Error cargando la página");
+        }
+    };
+    
 
     @Operation(summary = "Verifica el correo electrónico del usuario usando el token de verificación")
     @GetMapping("/auth/verify-email")

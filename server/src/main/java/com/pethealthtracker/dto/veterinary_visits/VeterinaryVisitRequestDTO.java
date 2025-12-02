@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VeterinaryVisitRequestDTO {
-    @Schema(description = "ID de la mascota que visita al veterinario", example = "1", required = true)
+    @Schema(description = "ID de la mascota que visita al veterinario", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "El ID de la mascota es obligatorio")
     private Long petId;
 
-    @Schema(description = "Fecha y hora de la visita", example = "2023-06-15T10:30:00", required = true)
+    @Schema(description = "Fecha y hora de la visita", example = "2023-06-15T10:30:00", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "La fecha y hora de la visita son obligatorias")
     private LocalDateTime visitDateTime;
 
