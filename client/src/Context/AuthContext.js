@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (tokenValue) => {
-    console.log("login", tokenValue);
     await AsyncStorage.setItem("token", tokenValue);
     setToken(tokenValue);
   };

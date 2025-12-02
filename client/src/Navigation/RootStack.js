@@ -3,9 +3,9 @@ import { useAuth } from "../Context/AuthContext";
 
 import Login from "../Screens/Login";
 import Register from "../Screens/Register";
-import Home from "../Screens/Homee";
 import Loading from "../Components/Loading";
 import ForgotPassword from "../Screens/ForgotPassword";
+import MyTabs from "./MyTabs";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ export default function RootStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {token ? (
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="MyTabs" component={MyTabs} />
       ) : (
         <>
           <Stack.Screen name="Login" component={Login} />
