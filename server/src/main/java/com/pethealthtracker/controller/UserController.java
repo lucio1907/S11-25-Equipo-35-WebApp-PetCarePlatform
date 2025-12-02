@@ -2,25 +2,24 @@ package com.pethealthtracker.controller;
 
 import com.pethealthtracker.dto.ApiResponse;
 import com.pethealthtracker.dto.user.UserDto;
+import com.pethealthtracker.service.FileStorageService;
 import com.pethealthtracker.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Controlador para gestionar las operaciones de usuario.
- * Permite a los usuarios autenticados gestionar su perfil y a los administradores gestionar todos los usuarios.
- */
 @Tag(name = "Usuarios (users)", description = "API para la gestión de usuarios")
 @RestController
 @RequestMapping("/users")
@@ -29,6 +28,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FileStorageService fileStorageService;
 
     @Operation(summary = "Obtiene el perfil del usuario actual")
     @GetMapping("/me")
@@ -99,14 +99,78 @@ public class UserController {
     @Operation(summary = "Sube una imagen de perfil")
     @PostMapping(value = "/me/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<String>> uploadProfilePicture(
-            @RequestParam MultipartFile file) throws IOException {
-        // En producción, implementar subida a un servicio como AWS S3
-        String imageUrl = "https://example.com/profile-pictures/" + file.getOriginalFilename();
-        userService.updateProfilePicture(imageUrl);
-        return ResponseEntity.ok(ApiResponse.<String>builder()
-                .success(true)
-                .message("Imagen de perfil actualizada correctamente")
-                .data(imageUrl)
-                .build());
+            @RequestParam("file") MultipartFile file) {
+        // Validar que el archivo no esté vacío
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.<String>builder()
+                            .success(false)
+                            .message("El archivo no puede estar vacío")
+                            .build());
+        }
+
+        // Validar que sea una imagen
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.<String>builder()
+                            .success(false)
+                            .message("El archivo debe ser una imagen")
+                            .build());
+        }
+
+        try {
+            // Guardar el archivo
+            String fileName = fileStorageService.storeFile(file);
+
+            // Construir la URL para acceder al archivo
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/files/download/")
+                    .path(fileName)
+                    .toUriString();
+
+            // Actualizar el perfil del usuario con la nueva URL de la imagen
+            userService.updateProfilePicture(fileDownloadUri);
+
+            return ResponseEntity.ok(ApiResponse.<String>builder()
+                    .success(true)
+                    .message("Imagen de perfil actualizada correctamente")
+                    .data(fileDownloadUri)
+                    .build());
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(ApiResponse.<String>builder()
+                            .success(false)
+                            .message("Error al subir la imagen: " + e.getMessage())
+                            .build());
+        }
+    }
+
+    @Operation(summary = "Obtiene la imagen de perfil del usuario actual")
+    @GetMapping(value = "/me/picture", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    public ResponseEntity<?> getProfilePicture() {
+        try {
+            UserDto user = userService.getCurrentUser();
+
+            if (user.getProfilePictureUrl() == null || user.getProfilePictureUrl().isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Extraer el nombre del archivo de la URL
+            String fileName = user.getProfilePictureUrl().substring(
+                    user.getProfilePictureUrl().lastIndexOf('/') + 1);
+
+            Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Ajustar según el tipo de imagen
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(ApiResponse.<String>builder()
+                            .success(false)
+                            .message("Error al cargar la imagen: " + e.getMessage())
+                            .build());
+        }
     }
 }
