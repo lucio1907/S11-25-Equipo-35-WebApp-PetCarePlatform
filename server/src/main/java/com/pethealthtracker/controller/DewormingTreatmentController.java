@@ -3,6 +3,7 @@ package com.pethealthtracker.controller;
 import com.pethealthtracker.dto.deworming.DewormingRequestDTO;
 import com.pethealthtracker.dto.deworming.DewormingResponseDTO;
 import com.pethealthtracker.service.DewormingTreatmentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Tratamiento de desparasitación", description = "Operaciones CRUD de tratamientos de desparasitaciónes")
 @RestController
 @RequestMapping("/pets/{petId}/deworming-treatments")
 @RequiredArgsConstructor
