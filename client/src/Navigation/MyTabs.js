@@ -1,6 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, StyleSheet, Image } from "react-native";
+
 import HomeScreen from "../Screens/Homee";
+import ProfileUser from "../Screens/Profile/ProfileUser";
+import EditProfile from "../Screens/Profile/EdithProfile";
 
 import HomeLog from "../assets/tabs/Home.png";
 import Group from "../assets/tabs/Group.png";
@@ -8,6 +12,20 @@ import Feeding from "../assets/tabs/Feedingt.png";
 import ProfileLog from "../assets/tabs/profile.png";
 
 const Tab = createBottomTabNavigator();
+const ProfileStack = createNativeStackNavigator();
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <ProfileStack.Screen name="ProfileMain" component={ProfileUser} />
+      <ProfileStack.Screen name="EditProfile" component={EditProfile} />
+    </ProfileStack.Navigator>
+  );
+}
 
 export default function MyTabs() {
   return (
@@ -92,7 +110,7 @@ export default function MyTabs() {
 
       <Tab.Screen
         name="Profile"
-        component={HomeScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View

@@ -6,6 +6,7 @@ import { login as loginService } from "../Services/Login";
 import { useAuth } from "../Context/AuthContext";
 
 export const useLogicLogin = () => {
+
   const [showPass, setShowPass] = useState(false);
   const navigation = useNavigation();
   const { login } = useAuth();
@@ -22,6 +23,7 @@ export const useLogicLogin = () => {
   const onSubmit = async (data) => {
     try {
       const response = await loginService(data);
+      console.log("Login response:", response); 
 
       if (response.success === false) {
         invalidCredentials(response?.message);

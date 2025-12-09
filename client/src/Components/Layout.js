@@ -1,11 +1,17 @@
 import { View, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import renderDiagonalColumn from "../Utils/renderDiagonalColumn";
 
 export default function Layout({ children }) {
+
+  const insets = useSafeAreaInsets();
+  
   return (
     <View style={styles.container}>
       <View style={styles.patternContainer}>{renderDiagonalColumn()}</View>
-      <View style={styles.content}>{children}</View>
+      <View style={[styles.content, { paddingTop: insets.top }]}>
+        {children}
+      </View>
     </View>
   );
 }
@@ -13,7 +19,7 @@ export default function Layout({ children }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f1d9b4ff",
   },
   patternContainer: {
     position: "absolute",

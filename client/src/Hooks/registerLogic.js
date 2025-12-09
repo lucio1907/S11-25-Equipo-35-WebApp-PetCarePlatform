@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
 export const registerLogic = () => {
+
   const [showPass, setShowPass] = useState(false);
   const navigation = useNavigation();
   const { registerSuccess, registerError, emailInUse } = useToastMessages();
@@ -25,12 +26,10 @@ export const registerLogic = () => {
         }
         return;
       }
-
       registerSuccess();
-
       setTimeout(() => {
         navigation.navigate("Login");
-      }, 1200);
+      }, 2000);
     } catch (error) {
       registerError(error.message || "Registration failed");
       console.log("error", error);
