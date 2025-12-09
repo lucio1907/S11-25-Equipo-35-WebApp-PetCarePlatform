@@ -1,6 +1,7 @@
 import { apiUrl } from "../Api/apiUrl";
 
 export const postRegister = async (data) => {
+  
   const response = await fetch(`${apiUrl}/auth/register`, {
     method: "POST",
     headers: {

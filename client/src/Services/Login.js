@@ -1,6 +1,7 @@
 import { apiUrl } from "../Api/apiUrl";
 
 export const login = async (data) => {
+  
   const response = await fetch(`${apiUrl}/auth/login`, {
     method: "POST",
     headers: {
