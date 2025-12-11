@@ -2,8 +2,8 @@ import { View, Image, Dimensions, StyleSheet } from "react-native";
 import Group from "../assets/Group.png";
 
 const { width, height } = Dimensions.get("window");
-const IMAGE_WIDTH = 160;
-const IMAGE_HEIGHT = 120;
+const IMAGE_WIDTH = 200;
+const IMAGE_HEIGHT = 160;
 const TOTAL_IMAGES = 5;
 const VERTICAL_SPACING = 140;
 const HORIZONTAL_OFFSET = 60;
@@ -27,7 +27,7 @@ export default function renderDiagonalColumn() {
   const images = [];
 
   const startX = width - IMAGE_WIDTH - 0;
-  const startY = 80;
+  const startY = 60;
 
   const colorScheme = [
     { type: "original", opacity: 0.85 },

@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#64C068",
+    backgroundColor: "#F28525",
     height: 50,
     justifyContent: "center",
     borderRadius: 30,
@@ -124,7 +124,7 @@ export const styles = StyleSheet.create({
   },
 
   signIn: {
-    color: "#3F7F40",
+    color: "#F28525",
     fontWeight: "700",
     zIndex: 3,
   },
