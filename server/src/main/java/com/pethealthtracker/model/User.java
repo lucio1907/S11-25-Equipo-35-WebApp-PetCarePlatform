@@ -1,5 +1,6 @@
 package com.pethealthtracker.model;
 
+import com.pethealthtracker.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -36,7 +37,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
     @NaturalId
     @NotBlank
     @Size(max = 100)
@@ -82,6 +82,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pet> pets = new HashSet<>();
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -98,6 +105,13 @@ public class User {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public boolean hasRole(Role role) {
+        return roles.contains(role);
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -105,6 +119,12 @@ public class User {
             createdAt = LocalDateTime.now();
         }
         updatedAt = LocalDateTime.now();
+        
+        // Asignar rol de usuario por defecto si no hay roles
+        if (this.roles == null || this.roles.isEmpty()) {
+            this.roles = new HashSet<>();
+            this.roles.add(Role.ROLE_USER);
+        }
     }
 
     @PreUpdate

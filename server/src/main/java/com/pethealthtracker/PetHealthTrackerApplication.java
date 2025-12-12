@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 @SpringBootApplication
 @EnableAsync
 public class PetHealthTrackerApplication {
@@ -47,11 +48,11 @@ public class PetHealthTrackerApplication {
 
                 ╔════════════════════════════════════════════════════════════════════╗
                 ║                                                                    ║
-                ║   🐾  ¡Pet Health Tracker está en funcionamiento! 🐾               ║
+                ║   🐾  ¡Pet Health Tracker está en funcionamiento! 🐾              ║
                 ║                                                                    ║
-                ║   🌐  URL de la API: %-43s   ║
+                ║   🌐  URL de la API: %-40s ║
                 ║                                                                    ║
-                ║   📚  Documentación: %-40s     ║
+                ║   📚  Documentación: %-40s ║
                 ║                                                                    ║
                 ╚════════════════════════════════════════════════════════════════════╝
                 """).formatted(

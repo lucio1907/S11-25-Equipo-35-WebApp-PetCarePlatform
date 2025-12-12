@@ -61,17 +61,22 @@ public class OpenApiConfig {
         OpenApiCustomizer prefixPathsCustomizer() {
                 return openApi -> {
                         Paths oldPaths = openApi.getPaths();
-                        if (oldPaths == null)
-                                return; 
+                        if (oldPaths == null || oldPaths.isEmpty()) {
+                                return;
+                        }
 
                         Paths newPaths = new Paths();
 
                         oldPaths.forEach((path, pathItem) -> {
-                                String newPath = path.startsWith("/api") ? path : "/api" + path;
+                                // Si la ruta ya comienza con /api, la dejamos como está
+                                // Si no, le agregamos /api al inicio
+                                String newPath = path.startsWith("/api/") || path.equals("/api") 
+                                        ? path 
+                                        : "/api" + (path.startsWith("/") ? path : "/" + path);
+                                
                                 newPaths.addPathItem(newPath, pathItem);
                         });
 
-                        // Reemplaza las rutas viejas con las nuevas modificadas
                         openApi.setPaths(newPaths);
                 };
         }

@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     @Serial
@@ -30,9 +31,10 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(User user) {
-        // For now, we're using a default role. You can modify this to get roles from your User entity
-        // if your application has role-based authorization
-        var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        // Obtener los roles del usuario y convertirlos a GrantedAuthority
+        var authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
         
         return new UserDetailsImpl(
                 user.getId(),

@@ -4,12 +4,12 @@ import com.pethealthtracker.dto.user.AdminUserRequest;
 import com.pethealthtracker.dto.user.UserDto;
 import com.pethealthtracker.exception.ResourceAlreadyExistsException;
 import com.pethealthtracker.exception.ResourceNotFoundException;
-import com.pethealthtracker.model.User;
 import com.pethealthtracker.model.enums.Role;
 import com.pethealthtracker.repository.UserRepository;
 import com.pethealthtracker.security.UserPrincipal;
 import com.pethealthtracker.service.AdminService;
 import com.pethealthtracker.service.UserService;
+import com.pethealthtracker.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
             throw new ResourceAlreadyExistsException("Email", "email", userRequest.getEmail());
         }
 
-        User user = new User();
+        com.pethealthtracker.model.User user = new com.pethealthtracker.model.User();
         user.setFirstName(userRequest.getFirstName());
         user.setLastName(userRequest.getLastName());
         user.setEmail(userRequest.getEmail());
@@ -78,7 +78,6 @@ public class AdminServiceImpl implements AdminService {
             throw new ResourceAlreadyExistsException("Email", "email", userRequest.getEmail());
         }
         user.setEmail(userRequest.getEmail());
-
         if (userRequest.getPassword() != null && !userRequest.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         }
@@ -92,7 +91,6 @@ public class AdminServiceImpl implements AdminService {
         User updatedUser = userRepository.save(user);
         return userService.convertToDto(updatedUser);
     }
-
     @Override
     @Transactional
     public void deleteUser(Long id) {

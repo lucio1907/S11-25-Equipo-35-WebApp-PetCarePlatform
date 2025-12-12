@@ -18,7 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin
+// @PreAuthorize("hasRole('ADMIN')")  // Temporalmente deshabilitado para crear el primer admin
 @Tag(name = "Administración de Usuarios", description = "Endpoints para gestionar usuarios del sistema (solo administradores)")
 public class AdminController {
 

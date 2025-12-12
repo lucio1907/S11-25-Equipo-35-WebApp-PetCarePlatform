@@ -14,4 +14,5 @@ public interface UserService {
     UserDto updateUserProfile(UserDto userDto);
     void changePassword(String currentPassword, String newPassword);
     void updateProfilePicture(String imageUrl);
+    UserDto convertToDto(com.pethealthtracker.model.User user);
 }

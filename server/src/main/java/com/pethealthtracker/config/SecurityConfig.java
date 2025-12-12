@@ -1,15 +1,18 @@
 package com.pethealthtracker.config;
 
 import com.pethealthtracker.model.User;
+import com.pethealthtracker.model.enums.Role;
 import com.pethealthtracker.repository.UserRepository;
 import com.pethealthtracker.security.JwtAuthenticationFilter;
 import com.pethealthtracker.security.JwtTokenProvider;
 
+import com.pethealthtracker.security.UserPrincipal;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,8 +28,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 
 import java.util.Arrays;
+
+import static com.pethealthtracker.model.enums.Role.ROLE_USER;
 
 @Configuration
 @EnableWebSecurity
@@ -34,11 +40,10 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    //! IMPORTANTE: Inyectamos el provider aquí en lugar de hacer 'new' abajo para que funcione @Value
-    private final JwtTokenProvider jwtTokenProvider; 
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Value("${app.oauth.default-password}")
     private String oauthDefaultPassword;
@@ -47,7 +52,7 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             // Auth endpoints
             "/auth/**",
-            // "/api/**",
+            "/api/auth/**",
 
             // API Documentation - Rutas principales de Swagger UI y OpenAPI
             "/v3/api-docs/**",
@@ -68,161 +73,111 @@ public class SecurityConfig {
             // H2 Console (solo para desarrollo)
             "/h2-console/**"
     };
-
+    
+    private static final String[] ADMIN_URLS = {
+        "/api/admin/**"
+    };
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Configuración de CORS
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        // Deshabilitar CSRF para todas las solicitudes
-        http.csrf(csrf -> csrf.disable());
-
-        // Configuración de autorización de solicitudes
-        http.authorizeHttpRequests(auth -> {
-            // Permitir todas las solicitudes OPTIONS
-            auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-
-            // Permitir acceso a las rutas en la lista blanca
-            auth.requestMatchers(WHITE_LIST_URL).permitAll();
-
-            // Permitir el acceso a la documentación de la API
-            auth.requestMatchers(
-                    "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html").permitAll();
-
-            // Todas las demás solicitudes requieren autenticación
-            auth.anyRequest().authenticated();
-        });
-
-        // Configuración de la gestión de sesión
-        http.sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        // Añadir el filtro JWT antes del filtro de autenticación de nombre de usuario y contraseña
-        http.authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.oauth2Login(oauth2 -> oauth2
-                .successHandler(this.oauthSuccessHandler())
-        );
-        // ---------------------------------
-
-        // Configuración de cabeceras para desarrollo
-        http.headers(headers -> {
-            // Deshabilitar la protección X-Frame-Options para H2 Console
-            headers.frameOptions(frame -> frame.disable());
-
-            // Configuración de caché
-            headers.cacheControl(cache -> {});
-
-            // Configuración de seguridad de contenido
-            headers.contentSecurityPolicy(csp -> csp.policyDirectives(
-                    "default-src 'self'; " +
-                            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                            "style-src 'self' 'unsafe-inline'; " +
-                            "img-src 'self' data:; " +
-                            "font-src 'self'"));
-        });
-
-        return http.build();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        // Permitir desde cualquier origen en desarrollo
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",
-                "http://127.0.0.1:3000",
-                "http://localhost:5000",
-                "http://127.0.0.1:5000"));
-
-        // Métodos HTTP permitidos
-        configuration.setAllowedMethods(Arrays.asList(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
-
-        // Cabeceras permitidas
-        configuration.setAllowedHeaders(Arrays.asList(
-                "Authorization",
-                "Content-Type",
-                "Accept",
-                "X-Requested-With",
-                "Cache-Control",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"));
-
-        // Cabeceras expuestas
-        configuration.setExposedHeaders(Arrays.asList(
-                "Authorization",
-                "Content-Type",
-                "Content-Disposition",
-                "Access-Control-Allow-Origin",
-                "Access-Control-Allow-Credentials"));
-
-        // Tiempo máximo de caché de la configuración CORS (en segundos)
-        configuration.setMaxAge(3600L);
-
-        // Permitir credenciales
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Add your frontend URL
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
-
-        // Configuración para todas las rutas
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
-
-
-   private AuthenticationSuccessHandler oauthSuccessHandler() {
-        return (request, response, authentication) -> {
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Configuración de CORS
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        
+        // Deshabilitar CSRF
+        http.csrf(csrf -> csrf.disable());
+        
+        // Configuración de sesión sin estado
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        
+        // Configuración de autorización
+        http.authorizeHttpRequests(authorize -> {
+            // Permitir todas las solicitudes OPTIONS
+            authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
             
-            if (authentication instanceof OAuth2AuthenticationToken) {
-                OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
-                
-                String email = oauthToken.getPrincipal().getAttribute("email");
-                
-                String firstName = oauthToken.getPrincipal().getAttribute("given_name");
-                String lastName = oauthToken.getPrincipal().getAttribute("family_name");
-                
-                // Fallback: Si por alguna razón 'given_name' es nulo, se usa 'name' (nombre completo)
-                if (firstName == null) {
-                    firstName = oauthToken.getPrincipal().getAttribute("name");
-                }
-                // Fallback: Si el apellido es nulo, ponemos un punto o guion para pasar la validación
-                if (lastName == null) {
-                    lastName = "-";
-                }
+            // Permitir acceso a las rutas en la lista blanca
+            Arrays.stream(WHITE_LIST_URL).forEach(pattern -> 
+                authorize.requestMatchers(pattern).permitAll()
+            );
+            
+            // Configurar acceso a rutas de administración
+            authorize.requestMatchers("/api/admin/users").permitAll(); // Temporalmente permitido para crear el primer admin
+            
+            // El resto de rutas de administración requieren rol ADMIN
+            authorize.requestMatchers("/api/admin/**").hasRole("ADMIN");
+            
+            // Todas las demás solicitudes requieren autenticación
+            authorize.anyRequest().authenticated();
+        });
+        
+        // Añadir el filtro JWT
+        http.authenticationProvider(authenticationProvider);
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+    @Bean
+    public AuthenticationSuccessHandler oauthSuccessHandler() {
+        return (request, response, authentication) -> {
+            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+                String userEmail = oauthToken.getPrincipal().getAttribute("email");
+                String userFirstName = oauthToken.getPrincipal().getAttribute("given_name");
+                String userLastName = oauthToken.getPrincipal().getAttribute("family_name");
+                // Create final copies for use in lambda
+                final String finalUserFirstName = (userFirstName != null) ? userFirstName : oauthToken.getPrincipal().getAttribute("name");
+                final String finalUserLastName = (userLastName != null) ? userLastName : "-";
 
-                // Guardar user en BD
-                final String finalFirstName = firstName;
-                final String finalLastName = lastName;
-
-                userRepository.findByEmail(email).orElseGet(() -> {
+                // Find or create user
+                User user = userRepository.findByEmail(userEmail).orElseGet(() -> {
                     User newUser = new User();
-                    newUser.setEmail(email);
-                    newUser.setFirstName(finalFirstName);
-                    newUser.setLastName(finalLastName);
-                    newUser.setPassword(oauthDefaultPassword); 
-                    
+                    newUser.setEmail(userEmail);
+                    newUser.setFirstName(finalUserFirstName);
+                    newUser.setLastName(finalUserLastName);
+                    newUser.addRole(Role.ROLE_USER);
                     newUser.setEmailVerified(true);
                     return userRepository.save(newUser);
                 });
+
+                // Create an Authentication object for the user
+                UserPrincipal userPrincipal = UserPrincipal.create(user);
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userPrincipal, 
+                    null, 
+                    userPrincipal.getAuthorities()
+                );
                 
-                String appJwt = jwtTokenProvider.generateToken(authentication);
+                // Generate JWT token with the authentication object
+                String token = jwtTokenProvider.generateToken(authToken);
                 
+                // Get the user's role for the response
+                String role = user.getRoles().stream()
+                    .findFirst()
+                    .map(Enum::name)
+                    .orElse("USER"); // Default role if no roles
+
+                // Configure response
                 response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                
-                // Nota: Usamos finalFirstName en la respuesta JSON
-                String jsonResponse = String.format("{\"message\": \"Login exitoso\", \"token\": \"%s\", \"usuario\": \"%s\", \"email\": \"%s\"}", 
-                        appJwt, finalFirstName, email);
-                response.getWriter().write(jsonResponse);
-            } else {
-                new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
-            }
-        };
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(
+                    String.format(
+                        "{\"token\":\"%s\",\"email\":\"%s\",\"role\":\"%s\"}",
+                        token, user.getEmail(), role
+                    )
+                    );
+                } else {
+                    new SavedRequestAwareAuthenticationSuccessHandler().onAuthenticationSuccess(request, response, authentication);
+                }
+            };
+        }
     }
-}
